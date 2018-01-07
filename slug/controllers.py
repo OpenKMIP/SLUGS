@@ -17,7 +17,7 @@
 import cherrypy
 
 
-class SLUGController(object):
+class MainController(object):
     def __init__(self):
         test_data = [
             ('Adam', 'Male'),
@@ -28,8 +28,8 @@ class SLUGController(object):
 
         # NOTE: Use leading underscores here to prevent auto URL routing. Auto
         # routing prevents _cp_dispatch from being called.
-        self._users = Users(test_data)
-        self._groups = Groups(test_data)
+        self._users = UsersController(test_data)
+        self._groups = GroupsController(test_data)
 
     # NOTE: vpath is a required argument name here.
     def _cp_dispatch(self, vpath):
@@ -92,7 +92,7 @@ class SLUGController(object):
         }
 
 
-class Users(object):
+class UsersController(object):
 
     def __init__(self, user_group_mapping=None):
         self.mapping = {}
@@ -138,7 +138,7 @@ class Users(object):
             return {'users': self.mapping.keys()}
 
 
-class Groups(object):
+class GroupsController(object):
 
     def __init__(self, user_group_mapping=None):
         self.mapping = {}
@@ -196,4 +196,23 @@ if __name__ == '__main__':
         'request.show_tracebacks': False
     })
 
-    cherrypy.quickstart(SLUGController())
+    cherrypy.quickstart(MainController(), '/slug')
+
+# Taken from http://docs.cherrypy.org/en/latest/config.html
+#
+# # Global site configuration
+# cherrypy.config.update({...})
+#
+# # Mount each app and pass it its own configuration
+# cherrypy.tree.mount(root1, "", appconf1)
+# cherrypy.tree.mount(root2, "/forum", appconf2)
+# cherrypy.tree.mount(root3, "/blog", appconf3)
+#
+# if hasattr(cherrypy.engine, 'block'):
+#    # 3.1 syntax
+#    cherrypy.engine.start()
+#    cherrypy.engine.block()
+# else:
+#    # 3.0 syntax
+#    cherrypy.server.quickstart()
+#    cherrypy.engine.start()
