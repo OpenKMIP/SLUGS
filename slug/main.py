@@ -20,6 +20,10 @@ from slug import plugins
 
 
 if __name__ == '__main__':
+    # Overall setup pattern taken from:
+    # http://docs.cherrypy.org/en/latest/config.html
+
+    # Set up global site configuration
     cherrypy.config.update({
         'log.access_file': '/var/log/slug/access.log',
         'log.error_file': '/var/log/slug/error.log'
@@ -31,39 +35,21 @@ if __name__ == '__main__':
         'request.show_tracebacks': False
     })
 
+    controller = controllers.MainController()
     plugins.FileMonitoringPlugin(
         cherrypy.engine,
-        "/etc/slug/data.csv"
+        "/etc/slug/data.csv",
+        controller.update
     ).subscribe()
 
-#    cherrypy.quickstart(controllers.MainController(), '/slug')
-
-    # Pattern taken from: http://docs.cherrypy.org/en/latest/config.html
-    controller = controllers.MainController()
+    # Mount the app and pass it its own configuration
     cherrypy.tree.mount(controller, "/slug", {})
 
     if hasattr(cherrypy.engine, 'block'):
+        # CherryPy 3.1 syntax
         cherrypy.engine.start()
         cherrypy.engine.block()
     else:
+        # CherryPy 3.0 syntax
         cherrypy.server.quickstart()
         cherrypy.engine.start()
-
-# Taken from http://docs.cherrypy.org/en/latest/config.html
-#
-# # Global site configuration
-# cherrypy.config.update({...})
-#
-# # Mount each app and pass it its own configuration
-# cherrypy.tree.mount(root1, "", appconf1)
-# cherrypy.tree.mount(root2, "/forum", appconf2)
-# cherrypy.tree.mount(root3, "/blog", appconf3)
-#
-# if hasattr(cherrypy.engine, 'block'):
-#    # 3.1 syntax
-#    cherrypy.engine.start()
-#    cherrypy.engine.block()
-# else:
-#    # 3.0 syntax
-#    cherrypy.server.quickstart()
-#    cherrypy.engine.start()
