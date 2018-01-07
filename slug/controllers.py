@@ -182,37 +182,3 @@ class GroupsController(object):
                 raise cherrypy.HTTPError(404, "Group not found.")
         else:
             return {'groups': self.mapping.keys()}
-
-
-if __name__ == '__main__':
-    cherrypy.config.update({
-        'log.access_file': '/var/log/slug/access.log',
-        'log.error_file': '/var/log/slug/error.log'
-    })
-
-    # NOTE: Comment this out, or set request.show_tracebacks to True, to see
-    # tracebacks with HTTP error results. Useful for development.
-    cherrypy.config.update({
-        'request.show_tracebacks': False
-    })
-
-    cherrypy.quickstart(MainController(), '/slug')
-
-# Taken from http://docs.cherrypy.org/en/latest/config.html
-#
-# # Global site configuration
-# cherrypy.config.update({...})
-#
-# # Mount each app and pass it its own configuration
-# cherrypy.tree.mount(root1, "", appconf1)
-# cherrypy.tree.mount(root2, "/forum", appconf2)
-# cherrypy.tree.mount(root3, "/blog", appconf3)
-#
-# if hasattr(cherrypy.engine, 'block'):
-#    # 3.1 syntax
-#    cherrypy.engine.start()
-#    cherrypy.engine.block()
-# else:
-#    # 3.0 syntax
-#    cherrypy.server.quickstart()
-#    cherrypy.engine.start()
