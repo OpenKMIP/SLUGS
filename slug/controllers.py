@@ -15,23 +15,33 @@
 
 
 import cherrypy
+import threading
+
+
+def synchronize(f):
+    def decorator(self, *args, **kwargs):
+        with self._lock:
+            return f(self, *args, **kwargs)
+
+    return decorator
 
 
 class MainController(object):
     def __init__(self):
-        test_data = [
-            ('Adam', 'Male'),
-            ('Eve', 'Female'),
-            ('Eve', 'Human'),
-            ('Adam', 'Human')
-        ]
+        self._lock = threading.RLock()
 
         # NOTE: Use leading underscores here to prevent auto URL routing. Auto
         # routing prevents _cp_dispatch from being called.
-        self._users = UsersController(test_data)
-        self._groups = GroupsController(test_data)
+        self._users = UsersController()
+        self._groups = GroupsController()
 
-    # NOTE: vpath is a required argument name here.
+    @synchronize
+    def update(self, data=None):
+        self._users.update(data)
+        self._groups.update(data)
+
+    # NOTE: vpath is a required argument name for _cp_dispatch.
+    @synchronize
     def _cp_dispatch(self, vpath):
         length = len(vpath)
         controller = self
@@ -85,6 +95,7 @@ class MainController(object):
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
+    @synchronize
     def index(self):
         return {
             'users': self._users.list(),
@@ -96,20 +107,23 @@ class UsersController(object):
 
     def __init__(self, user_group_mapping=None):
         self.mapping = {}
+        self.update(user_group_mapping)
+
+    def update(self, user_group_mapping=None):
+        mapping = {}
 
         if user_group_mapping:
             for user_group in user_group_mapping:
-                user_groups = self.mapping.get(user_group[0], [])
+                user_groups = mapping.get(user_group[0], [])
                 user_groups.append(user_group[1])
-                self.mapping.update([(user_group[0], user_groups)])
+                mapping.update([(user_group[0], user_groups)])
 
             # Do one final pass to remove duplicates.
-            for user in self.mapping.keys():
-                user_groups = self.mapping.get(user)
-                self.mapping.update([(user, list(set(user_groups)))])
+            for user in mapping.keys():
+                user_groups = mapping.get(user)
+                mapping.update([(user, list(set(user_groups)))])
 
-    def update(self, user_group_mapping=None):
-        pass
+        self.mapping = mapping
 
     def list(self):
         return self.mapping.keys()
@@ -142,20 +156,23 @@ class GroupsController(object):
 
     def __init__(self, user_group_mapping=None):
         self.mapping = {}
+        self.update(user_group_mapping)
+
+    def update(self, user_group_mapping=None):
+        mapping = {}
 
         if user_group_mapping:
             for user_group in user_group_mapping:
-                user_groups = self.mapping.get(user_group[1], [])
+                user_groups = mapping.get(user_group[1], [])
                 user_groups.append(user_group[0])
-                self.mapping.update([(user_group[1], user_groups)])
+                mapping.update([(user_group[1], user_groups)])
 
             # Do one final pass to remove duplicates.
-            for group in self.mapping.keys():
-                group_users = self.mapping.get(group)
-                self.mapping.update([(group, list(set(group_users)))])
+            for group in mapping.keys():
+                group_users = mapping.get(group)
+                mapping.update([(group, list(set(group_users)))])
 
-    def update(self, user_group_mapping=None):
-        pass
+        self.mapping = mapping
 
     def list(self):
         return self.mapping.keys()
