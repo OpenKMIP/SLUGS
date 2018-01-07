@@ -21,9 +21,10 @@ import os
 
 class FileMonitoringPlugin(plugins.SimplePlugin):
 
-    def __init__(self, bus, path):
+    def __init__(self, bus, path, callback):
         plugins.SimplePlugin.__init__(self, bus)
 
+        self._callback = callback
         self._path = None
         self._t = 0
 
@@ -56,3 +57,12 @@ class FileMonitoringPlugin(plugins.SimplePlugin):
 
     def update_data(self):
         self.bus.log("Monitored file updated, reloading data.")
+
+        data = []
+        with open(self._path, 'r') as f:
+            for line in f:
+                entry = line.strip().split(',')
+                if len(entry) == 2:
+                    data.append(entry)
+
+        self._callback(data)
