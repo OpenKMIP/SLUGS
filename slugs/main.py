@@ -15,8 +15,8 @@
 
 import cherrypy
 
-from slug import controllers
-from slug import plugins
+from slugs import controllers
+from slugs import plugins
 
 
 if __name__ == '__main__':

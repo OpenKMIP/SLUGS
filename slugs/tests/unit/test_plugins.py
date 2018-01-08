@@ -20,7 +20,7 @@ import shutil
 import tempfile
 import testtools
 
-from slug import plugins
+from slugs import plugins
 
 
 class TestFileMonitoringPlugin(testtools.TestCase):

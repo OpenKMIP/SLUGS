@@ -17,7 +17,7 @@ import cherrypy
 import mock
 import testtools
 
-from slug import controllers
+from slugs import controllers
 
 
 class TestMainController(testtools.TestCase):
