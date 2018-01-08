@@ -54,7 +54,7 @@ class MainController(object):
             elif arg == 'groups':
                 controller = self._groups
             else:
-                raise cherrypy.HTTPError(404, "Resource not found.")
+                raise cherrypy.HTTPError(404, "Collection not found.")
 
         # /collection/item
         if length >= 2:
@@ -68,14 +68,12 @@ class MainController(object):
             arg = vpath.pop(0)
             if controller == self._users:
                 if arg != 'groups':
-                    # TODO (peter-hamilton) Craft more descriptive message.
-                    raise cherrypy.HTTPError(404, "Resource not found.")
+                    raise cherrypy.HTTPError(404, "User attribute not found.")
                 else:
                     cherrypy.request.params['groups'] = True
             else:
                 if arg != 'users':
-                    # TODO (peter-hamilton) Craft more descriptive message.
-                    raise cherrypy.HTTPError(404, "Resource not found.")
+                    raise cherrypy.HTTPError(404, "Group attribute not found.")
                 else:
                     cherrypy.request.params['users'] = True
 
@@ -88,7 +86,6 @@ class MainController(object):
 
         # Invalid
         if length >= 5:
-            # TODO (peter-hamilton) Craft more descriptive message.
             raise cherrypy.HTTPError(404, "Resource not found.")
 
         return controller
