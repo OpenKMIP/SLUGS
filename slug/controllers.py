@@ -170,27 +170,25 @@ class GroupsController(object):
         self.mapping = mapping
 
     def list(self):
-        return self.mapping.keys()
+        return list(self.mapping.keys())
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def index(self, group=None, user=None, users=False):
+    def index(self, group=None, users=False, user=None):
         if group:
             if group in self.mapping.keys():
                 if users:
                     group_users = self.mapping.get(group)
                     if user:
                         if user in group_users:
-                            # TODO (peter-hamilton) Return 200 here.
                             return
                         else:
                             raise cherrypy.HTTPError(404, "User not found.")
                     else:
                         return {'users': group_users}
                 else:
-                    # TODO (peter-hamilton) Return 200 here.
                     return
             else:
                 raise cherrypy.HTTPError(404, "Group not found.")
         else:
-            return {'groups': self.mapping.keys()}
+            return {'groups': list(self.mapping.keys())}

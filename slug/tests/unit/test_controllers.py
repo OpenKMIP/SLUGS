@@ -416,16 +416,186 @@ class TestGroupsController(testtools.TestCase):
         super(TestGroupsController, self).setUp()
 
     def test_init(self):
-        self.skip('')
+        """
+        Test that a GroupsController can be built without error.
+        """
+        controller = controllers.GroupsController()
+
+        self.assertEqual(controller.mapping, {})
 
     def test_update_with_none(self):
-        self.skip('')
+        """
+        Test that GroupsController data can be updated with an empty data set.
+        """
+        controller = controllers.GroupsController()
+
+        self.assertEqual(controller.mapping, {})
+
+        controller.update(user_group_mapping=None)
+
+        self.assertEqual(controller.mapping, {})
 
     def test_update_with_data(self):
-        self.skip('')
+        """
+        Test that GroupsController data can be updated with a new data set.
+        """
+        controller = controllers.GroupsController()
+
+        self.assertEqual(controller.mapping, {})
+
+        controller.update(
+            user_group_mapping=[
+                ('Adam', 'Male'),
+                ('Eve', 'Female'),
+                ('Adam', 'Human'),
+                ('Eve', 'Human')
+            ]
+        )
+
+        self.assertEqual(3, len(controller.mapping.keys()))
+        self.assertIn('Male', controller.mapping.keys())
+        self.assertIn('Female', controller.mapping.keys())
+        self.assertIn('Human', controller.mapping.keys())
+
+        self.assertEqual(1, len(controller.mapping.get('Male')))
+        self.assertIn('Adam', controller.mapping.get('Male'))
+
+        self.assertEqual(1, len(controller.mapping.get('Female')))
+        self.assertIn('Eve', controller.mapping.get('Female'))
+
+        self.assertEqual(2, len(controller.mapping.get('Human')))
+        self.assertIn('Adam', controller.mapping.get('Human'))
+        self.assertIn('Eve', controller.mapping.get('Human'))
 
     def test_list(self):
-        self.skip('')
+        """
+        Test that GroupsController data can be accessed via list.
+        """
+        controller = controllers.GroupsController()
 
-    def test_index_a_bunch(self):
-        self.skip('')
+        result = controller.list()
+        self.assertEqual(result, [])
+
+        controller.update(
+            user_group_mapping=[
+                ('Adam', 'Male'),
+                ('Eve', 'Female'),
+                ('Adam', 'Human'),
+                ('Eve', 'Human')
+            ]
+        )
+
+        result = controller.list()
+        self.assertEqual(3, len(result))
+        self.assertIn('Male', result)
+        self.assertIn('Female', result)
+        self.assertIn('Human', result)
+
+    def test_index_none(self):
+        """
+        Test that a GroupsController can process an index query with no
+        arguments.
+        """
+        controller = controllers.GroupsController()
+
+        result = controller.index()
+        self.assertIsInstance(result, dict)
+        self.assertEqual(1, len(result.keys()))
+        self.assertIn('groups', result.keys())
+        self.assertEqual(result.get('groups'), [])
+
+        controller.update(
+            user_group_mapping=[
+                ('Adam', 'Male'),
+                ('Eve', 'Female'),
+                ('Adam', 'Human'),
+                ('Eve', 'Human')
+            ]
+        )
+
+        result = controller.index()
+        self.assertIsInstance(result, dict)
+        self.assertEqual(1, len(result.keys()))
+        self.assertIn('groups', result.keys())
+        self.assertEqual(3, len(result.get('groups')))
+        self.assertIn('Male', result.get('groups'))
+        self.assertIn('Female', result.get('groups'))
+        self.assertIn('Human', result.get('groups'))
+
+    def test_index_group(self):
+        """
+        Test that a GroupsController can process an index query with a group
+        argument.
+        """
+        controller = controllers.GroupsController()
+
+        kwargs = {'group': 'Female'}
+        self.assertRaisesRegexp(
+            cherrypy.HTTPError,
+            "Group not found.",
+            controller.index,
+            **kwargs
+        )
+
+        controller.update(
+            user_group_mapping=[
+                ('Adam', 'Male'),
+                ('Eve', 'Female'),
+                ('Adam', 'Human'),
+                ('Eve', 'Human')
+            ]
+        )
+
+        controller.index(group='Female')
+
+    def test_index_group_users(self):
+        """
+        Test that a GroupsController can process an index query with group and
+        users arguments.
+        """
+        controller = controllers.GroupsController()
+        controller.update(
+            user_group_mapping=[
+                ('Adam', 'Male'),
+                ('Eve', 'Female'),
+                ('Adam', 'Human'),
+                ('Eve', 'Human')
+            ]
+        )
+
+        result = controller.index(group='Human', users=True)
+        self.assertIsInstance(result, dict)
+        self.assertEqual(1, len(result.keys()))
+        self.assertIn('users', result.keys())
+        self.assertEqual(2, len(result.get('users')))
+        self.assertIn('Adam', result.get('users'))
+        self.assertIn('Eve', result.get('users'))
+
+    def test_index_group_users_user(self):
+        """
+        Test that a GroupsController can process an index query with group,
+        users, and user arguments.
+        """
+        controller = controllers.GroupsController()
+        controller.update(
+            user_group_mapping=[
+                ('Adam', 'Male'),
+                ('Eve', 'Female'),
+                ('Adam', 'Human'),
+                ('Eve', 'Human')
+            ]
+        )
+
+        kwargs = {
+            'group': 'Human',
+            'users': True,
+            'user': 'invalid'
+        }
+        self.assertRaisesRegexp(
+            cherrypy.HTTPError,
+            "User not found.",
+            controller.index,
+            **kwargs
+        )
+
+        controller.index(group='Human', users=True, user='Adam')
