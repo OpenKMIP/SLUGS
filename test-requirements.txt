@@ -1,2 +1,6 @@
+coverage
 bandit
 flake8
+mock
+pytest
+testtools
