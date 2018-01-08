@@ -123,7 +123,7 @@ class UsersController(object):
         self.mapping = mapping
 
     def list(self):
-        return self.mapping.keys()
+        return list(self.mapping.keys())
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -144,7 +144,7 @@ class UsersController(object):
             else:
                 raise cherrypy.HTTPError(404, "User not found.")
         else:
-            return {'users': self.mapping.keys()}
+            return {'users': list(self.mapping.keys())}
 
 
 class GroupsController(object):
