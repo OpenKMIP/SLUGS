@@ -42,11 +42,11 @@ class FileMonitoringPlugin(plugins.SimplePlugin):
             raise ValueError("Path must be an existing file system path.")
 
     def start(self):
-        self.bus.log('Starting data monitoring plugin...')
+        self.bus.log("Starting data monitoring plugin.")
         self.bus.subscribe("main", self.check_path)
 
     def stop(self):
-        self.bus.log('Stopping data monitoring plugin...')
+        self.bus.log("Stopping data monitoring plugin.")
         self.bus.unsubscribe("main", self.check_path)
 
     def check_path(self):
