@@ -127,21 +127,19 @@ class UsersController(object):
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def index(self, user=None, group=None, groups=False):
-        if user:
+    def index(self, user=None, groups=False, group=None):
+        if user is not None:
             if user in self.mapping.keys():
                 if groups:
                     user_groups = self.mapping.get(user)
-                    if group:
+                    if group is not None:
                         if group in user_groups:
-                            # TODO (peter-hamilton) Return 200 here.
                             return
                         else:
                             raise cherrypy.HTTPError(404, "Group not found.")
                     else:
                         return {'groups': user_groups}
                 else:
-                    # TODO (peter-hamilton) Return 200 here.
                     return
             else:
                 raise cherrypy.HTTPError(404, "User not found.")
