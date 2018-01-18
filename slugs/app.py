@@ -13,37 +13,57 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import argparse
 import cherrypy
+import os
 
 from slugs import controllers
 from slugs import plugins
 
 
-if __name__ == '__main__':
+def build_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-c",
+        "--config",
+        dest="config",
+        type=str,
+        default="/etc/slugs/slugs.conf",
+        help="Configuration file path."
+    )
+    return parser
+
+
+def check_arguments(args):
+    if not os.path.exists(args.config):
+        raise ValueError(
+            "Configuration file path ({}) does not exist.".format(args.config)
+        )
+
+
+def run():
+    parser = build_parser()
+    args = parser.parse_args()
+    check_arguments(args)
+
     # Overall setup pattern taken from:
     # http://docs.cherrypy.org/en/latest/config.html
 
     # Set up global site configuration
-    cherrypy.config.update({
-        'log.access_file': '/var/log/slug/access.log',
-        'log.error_file': '/var/log/slug/error.log'
-    })
-
-    # NOTE: Comment this out, or set request.show_tracebacks to True, to see
-    # tracebacks with HTTP error results. Useful for development.
-    cherrypy.config.update({
-        'request.show_tracebacks': False
-    })
-
+    cherrypy.config.update(args.config)
     controller = controllers.MainController()
-    plugins.FileMonitoringPlugin(
-        cherrypy.engine,
-        "/etc/slug/data.csv",
-        controller.update
-    ).subscribe()
 
     # Mount the app and pass it its own configuration
-    cherrypy.tree.mount(controller, "/slug", {})
+    application = cherrypy.tree.mount(
+        controller,
+        "/slugs",
+        config=args.config
+    )
+    plugins.FileMonitoringPlugin(
+        cherrypy.engine,
+        application.config.get('data').get('user_group_mapping'),
+        controller.update
+    ).subscribe()
 
     if hasattr(cherrypy.engine, 'block'):
         # CherryPy 3.1 syntax
@@ -53,3 +73,7 @@ if __name__ == '__main__':
         # CherryPy 3.0 syntax
         cherrypy.server.quickstart()
         cherrypy.engine.start()
+
+
+if __name__ == '__main__':
+    run()
