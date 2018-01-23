@@ -42,11 +42,15 @@ class FileMonitoringPlugin(plugins.SimplePlugin):
             raise ValueError("Path must be an existing file system path.")
 
     def start(self):
-        self.bus.log("Starting data monitoring plugin.")
+        self.bus.log(
+            "Starting data monitoring plugin for file: {}".format(self._path)
+        )
         self.bus.subscribe("main", self.check_path)
 
     def stop(self):
-        self.bus.log("Stopping data monitoring plugin.")
+        self.bus.log(
+            "Stopping data monitoring plugin for file: {}".format(self._path)
+        )
         self.bus.unsubscribe("main", self.check_path)
 
     def check_path(self):
@@ -56,13 +60,29 @@ class FileMonitoringPlugin(plugins.SimplePlugin):
             self.update_data()
 
     def update_data(self):
-        self.bus.log("Monitored file updated, reloading data.")
+        self.bus.log(
+            "Monitored file ({}) updated. Reloading data.".format(self._path)
+        )
 
         data = []
         with open(self._path, 'r') as f:
             for line in f:
-                entry = line.strip().split(',')
+                line = line.strip()
+
+                # Ignore empty lines and comments
+                if line == '':
+                    continue
+                if line[0] == '#':
+                    continue
+
+                entry = line.split(',')
                 if len(entry) == 2:
-                    data.append(entry)
+                    data.append([entry[0].strip(), entry[1].strip()])
+                else:
+                    self.bus.log(
+                        "Error parsing monitored file ({}). Halting data "
+                        "update.".format(self._path)
+                    )
+                    return
 
         self._callback(data)

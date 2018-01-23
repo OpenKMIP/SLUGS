@@ -114,7 +114,7 @@ class TestFileMonitoringPlugin(testtools.TestCase):
         plugin.start()
 
         plugin.bus.log.assert_called_once_with(
-            "Starting data monitoring plugin."
+            "Starting data monitoring plugin for file: {}".format(plugin.path)
         )
         plugin.bus.subscribe.assert_called_once_with(
             "main",
@@ -140,7 +140,7 @@ class TestFileMonitoringPlugin(testtools.TestCase):
         plugin.stop()
 
         plugin.bus.log.assert_called_once_with(
-            "Stopping data monitoring plugin."
+            "Stopping data monitoring plugin for file: {}".format(plugin.path)
         )
         plugin.bus.unsubscribe.assert_called_once_with(
             "main",
@@ -212,7 +212,7 @@ class TestFileMonitoringPlugin(testtools.TestCase):
         plugin.update_data()
 
         plugin.bus.log.assert_called_once_with(
-            "Monitored file updated, reloading data."
+            "Monitored file ({}) updated. Reloading data.".format(plugin.path)
         )
         callback.assert_called_once_with([])
 
@@ -232,21 +232,57 @@ class TestFileMonitoringPlugin(testtools.TestCase):
         callback.assert_not_called()
 
         with open(self.temp_file.name, 'w') as f:
-            f.write("Adam,Male\n")
-            f.write("Eve,Female\n")
-            f.write("Adam,Human\n")
-            f.write("Eve,Human\n")
+            f.write("John,Male\n")
+            f.write("Jane,Female\n")
+            f.write("John,Human\n")
+            f.write("Jane,Human\n")
+            f.write("\n")
+            f.write("# This is a comment.")
 
         plugin.update_data()
 
         plugin.bus.log.assert_called_once_with(
-            "Monitored file updated, reloading data."
+            "Monitored file ({}) updated. Reloading data.".format(plugin.path)
         )
         callback.assert_called_once_with(
             [
-                ['Adam', 'Male'],
-                ['Eve', 'Female'],
-                ['Adam', 'Human'],
-                ['Eve', 'Human']
+                ['John', 'Male'],
+                ['Jane', 'Female'],
+                ['John', 'Human'],
+                ['Jane', 'Human']
             ]
         )
+
+    def test_update_data_with_bad_data(self):
+        """
+        Test that the FileMonitoringPlugin processes a data file correctly,
+        handling data errors as expected.
+        """
+        callback = mock.MagicMock()
+        plugin = plugins.FileMonitoringPlugin(
+            cherrypy.engine,
+            self.temp_file.name,
+            callback
+        )
+        plugin.bus = mock.MagicMock(spec=cherrypy.engine)
+
+        plugin.bus.log.assert_not_called()
+        callback.assert_not_called()
+
+        with open(self.temp_file.name, 'w') as f:
+            f.write("John,Male\n")
+            f.write("JaneFemale\n")
+            f.write("John,Human\n")
+            f.write("Jane,Human\n")
+
+        plugin.update_data()
+
+        plugin.bus.log.assert_any_call(
+            "Monitored file ({}) updated. Reloading data.".format(plugin.path)
+        )
+        plugin.bus.log.assert_any_call(
+            "Error parsing monitored file ({}). Halting data update.".format(
+                plugin.path
+            )
+        )
+        callback.assert_not_called()
