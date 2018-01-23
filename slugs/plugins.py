@@ -43,13 +43,13 @@ class FileMonitoringPlugin(plugins.SimplePlugin):
 
     def start(self):
         self.bus.log(
-            "Starting data monitoring plugin for file: {}".format(self._path)
+            "Starting file monitoring plugin for file: {}".format(self._path)
         )
         self.bus.subscribe("main", self.check_path)
 
     def stop(self):
         self.bus.log(
-            "Stopping data monitoring plugin for file: {}".format(self._path)
+            "Stopping file monitoring plugin for file: {}".format(self._path)
         )
         self.bus.unsubscribe("main", self.check_path)
 
@@ -81,7 +81,7 @@ class FileMonitoringPlugin(plugins.SimplePlugin):
                 else:
                     self.bus.log(
                         "Error parsing monitored file ({}). Halting data "
-                        "update.".format(self._path)
+                        "reload.".format(self._path)
                     )
                     return
 

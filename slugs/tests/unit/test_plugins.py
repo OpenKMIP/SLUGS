@@ -114,7 +114,7 @@ class TestFileMonitoringPlugin(testtools.TestCase):
         plugin.start()
 
         plugin.bus.log.assert_called_once_with(
-            "Starting data monitoring plugin for file: {}".format(plugin.path)
+            "Starting file monitoring plugin for file: {}".format(plugin.path)
         )
         plugin.bus.subscribe.assert_called_once_with(
             "main",
@@ -140,7 +140,7 @@ class TestFileMonitoringPlugin(testtools.TestCase):
         plugin.stop()
 
         plugin.bus.log.assert_called_once_with(
-            "Stopping data monitoring plugin for file: {}".format(plugin.path)
+            "Stopping file monitoring plugin for file: {}".format(plugin.path)
         )
         plugin.bus.unsubscribe.assert_called_once_with(
             "main",
@@ -281,7 +281,7 @@ class TestFileMonitoringPlugin(testtools.TestCase):
             "Monitored file ({}) updated. Reloading data.".format(plugin.path)
         )
         plugin.bus.log.assert_any_call(
-            "Error parsing monitored file ({}). Halting data update.".format(
+            "Error parsing monitored file ({}). Halting data reload.".format(
                 plugin.path
             )
         )
