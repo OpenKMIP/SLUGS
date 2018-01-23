@@ -27,6 +27,11 @@ setuptools.setup(
     author_email="peter.allen.hamilton@gmail.com",
     url="",
     license="Apache License, Version 2.0",
+    entry_points={
+        'console_scripts': [
+            'slugs = slugs.app:run'
+        ]
+    },
     classifiers=[
         "Environment :: Web Environment",
         "Framework :: CherryPy",
