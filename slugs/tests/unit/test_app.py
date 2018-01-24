@@ -130,13 +130,13 @@ class TestApplication(testtools.TestCase):
     @mock.patch('cherrypy.config')
     @mock.patch('slugs.app.build_parser')
     def test_main_legacy(self,
-                  build_parser_mock,
-                  cherrypy_config_mock,
-                  main_controller_mock,
-                  cherrypy_tree_mock,
-                  plugin_mock,
-                  cherrypy_engine_mock,
-                  cherrypy_server_mock):
+                         build_parser_mock,
+                         cherrypy_config_mock,
+                         main_controller_mock,
+                         cherrypy_tree_mock,
+                         plugin_mock,
+                         cherrypy_engine_mock,
+                         cherrypy_server_mock):
         """
         Test that the main function can be run without error, assuming a
         legacy version of CherryPy is being used.
