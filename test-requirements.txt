@@ -3,4 +3,5 @@ bandit
 flake8
 mock
 pytest
+requests
 testtools
