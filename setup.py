@@ -20,7 +20,7 @@ import setuptools
 
 setuptools.setup(
     name="slugs",
-    version="0.1.0",
+    version="1.0.0",
     description="A Simple, Lightweight User Group Service.",
     keywords="authentication",
     author="Peter Hamilton",
