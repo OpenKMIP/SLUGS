@@ -137,14 +137,14 @@ A log message acknowledging this data update will be logged in
 
 If an error occurs during data reload, SLUGS will stop processing the new data
 and will retain the prior data set it was serving. This allows data updates to
-be made to SLUGS without potential breaking the application. A log message
+be made to SLUGS without potentially breaking the application. A log message
 acknowledging this data update error will be logged in ``log.error_file`` when
 the error is detected.
 
 .. code-block:: console
 
     [timestamp] ENGINE Error parsing monitored file (<path/here>). Halting
-    data update.
+    data reload.
 
 .. _`CherryPy Configuration`: http://docs.cherrypy.org/en/latest/config.html
 .. _`CherryPy Environments`: http://docs.cherrypy.org/en/latest/config.html#environments
