@@ -14,7 +14,7 @@ The issue number for your new issue should be included at the end of the
 commit message of each patch related to that issue.
 
 If you simply want to request a new feature but do not intend on working on
-it, file your issue as normal and the project maintainers wil triage it for
+it, file your issue as normal and the project maintainers will triage it for
 future work.
 
 .. _writing-code:
@@ -65,15 +65,14 @@ up to and including ``master``.
 Running Tests
 -------------
 SLUGS uses ``tox`` to manage testing across multiple Python versions. Test
-infrastructure currently supports Python 2.7, 3.4, 3.5, and 3.6. Test
-coverage results are currently included with each Python test environment. To
-test against a specific Python version (e.g., Python 2.7), run:
+infrastructure currently supports Python 2.7, 3.4, 3.5, and 3.6. Additional
+test environments are provided for security, style, and documentation checks.
 
-.. code-block:: console
+.. note::
+   All of the ``tox`` commands discussed in this section should be run from
+   the root of the SLUGS repository, in the same directory as the ``tox.ini``
+   configuration file.
 
-    $ tox -e py27
-
-SLUGS also provides ``tox`` environments for style and security checks.
 The style checks leverage ``flake8`` and can be run like so:
 
 .. code-block:: console
@@ -86,21 +85,67 @@ The security checks use ``bandit`` and can be run like so:
 
     $ tox -e bandit
 
-To run the entire testing suite, simple run ``tox`` without any arguments.
+The documentation checks leverage ``sphinx`` to build the HTML documentation
+in a temporary directory, verifying that there are no errors. These checks
+can be run like so:
+
+.. code-block:: console
+
+    $ tox -e docs
+
+To run the above checks along with the entire unit test suite, simple run
+``tox`` without any arguments.
 
 .. code-block:: console
 
     $ tox
 
+
+Unit Tests
+~~~~~~~~~~
+The unit test suite tests each individual component of the SLUGS code base,
+verifying that each component works correctly in isolation. Ideal code
+coverage would include the entire code base. To facilitate improving coverage,
+test coverage results are included with each Python unit test environment.
+
+To test against a specific Python version (e.g., Python 2.7), run:
+
+.. code-block:: console
+
+    $ tox -e py27
+
+Integration Tests
+~~~~~~~~~~~~~~~~~
+The integration test suite tests the REST API provided by SLUGS, verifying
+that the right response data and response status codes are returned for
+specific queries. An instance of SLUGS must already be running and serving
+the ``examples/user_group_mapping.csv`` data file for the integration test
+cases to pass.
+
+Code base coverage is not a goal of the integration test suite. Code coverage
+statistics are therefore not included in the output of the integration tests.
+For code coverage, run the unit tests above.
+
+To run the integration test suite, the URL to the SLUGS instance must be
+passed to the test suite using the ``--url`` configuration argument. Assuming
+the SLUGS URL is ``http://127.0.0.1:8080/slugs``, the following ``tox``
+command will set up and execute the integration tests:
+
+.. code-block:: console
+
+    $ tox -r -e integration -- --url http://127.0.0.1:8080/slugs
+
 For more information on the testing tools used here, see the following
 resources:
 
-* `tox`_
-* `flake8`_
 * `bandit`_
+* `flake8`_
+* `sphinx`_
+* `tox`_
 
 .. _`issue tracker`: https://github.com/OpenKMIP/SLUGS/issues
 .. _`What to put in your bug report`: http://www.contribution-guide.org/#what-to-put-in-your-bug-report
 .. _`tox`: https://pypi.python.org/pypi/tox
 .. _`flake8`: https://pypi.python.org/pypi/flake8
 .. _`bandit`: https://pypi.python.org/pypi/bandit
+.. _`sphinx`: http://www.sphinx-doc.org/en/stable/
