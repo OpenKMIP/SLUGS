@@ -10,8 +10,12 @@ web service that serves user/group membership data over a basic REST interface.
     {u'users': [u'Jane', u'John'], u'groups': [u'Male', u'Female', u'Human']}
     >>> requests.get('http://127.0.0.1:8080/slugs/users').json()
     {u'users': [u'Jane', u'John']}
+    >>> requests.get('http://127.0.0.1:8080/slugs/users/John').status_code
+    200
     >>> requests.get('http://127.0.0.1:8080/slugs/users/John/groups').json()
     {u'groups': [u'Male', u'Human']}
+    >>> requests.get('http://127.0.0.1:8080/slugs/users/John/groups/Male').status_code
+    200
 
 For more information on the SLUGS REST API, see :doc:`API <api>`.
 
@@ -42,6 +46,7 @@ Layout
    :maxdepth: 2
 
    api
+   changelog
    configuration
    development
    installation
