@@ -37,11 +37,11 @@ def build_parser():
 def check_arguments(args):
     if not os.path.exists(args.config):
         raise ValueError(
-            "Configuration file path ({}) does not exist.".format(args.config)
+            "Configuration file path '{}' does not exist.".format(args.config)
         )
 
 
-def run():
+def main():
     parser = build_parser()
     args = parser.parse_args()
     check_arguments(args)
@@ -76,4 +76,4 @@ def run():
 
 
 if __name__ == '__main__':
-    run()
+    main()

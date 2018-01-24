@@ -29,7 +29,7 @@ setuptools.setup(
     license="Apache License, Version 2.0",
     entry_points={
         'console_scripts': [
-            'slugs = slugs.app:run'
+            'slugs = slugs.app:main'
         ]
     },
     classifiers=[
