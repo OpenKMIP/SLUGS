@@ -36,7 +36,7 @@ Commit messages should include a single line title (75 characters max) followed
 by a blank line and a description of the change, including feature details,
 testing and documentation updates, feature limitations, known issues, etc.
 
-The issue number fo the issue associated with the commit should be included
+The issue number for the issue associated with the commit should be included
 at the end of the commit message, if it exists. If the commit is the final one
 for a specific issue, use ``Closes #XXX`` or ``Fixes #XXX`` to link the issue
 and close it simultaneously.
