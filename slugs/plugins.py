@@ -39,7 +39,9 @@ class FileMonitoringPlugin(plugins.SimplePlugin):
         if os.path.exists(value):
             self._path = value
         else:
-            raise ValueError("Path must be an existing file system path.")
+            raise ValueError(
+                "Monitored file ({}) must be an existing file.".format(value)
+            )
 
     def start(self):
         self.bus.log(
