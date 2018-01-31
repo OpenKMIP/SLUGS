@@ -20,11 +20,18 @@ import re
 import setuptools
 
 # Dynamically set __version__
-version_path = os.path.join(os.path.dirname(
-    os.path.realpath(__file__)), 'slugs', 'version.py')
+version_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)),
+    'slugs',
+    'version.py'
+)
 with open(version_path, 'r') as version_file:
-    mo = re.search(r"^.*= '(\d\.\d\..*)'$", version_file.read(), re.MULTILINE)
-__version__ = mo.group(1)
+    mo = re.search(
+        r"^.*= '(\d\.\d\..*)'$",
+        version_file.read(),
+        re.MULTILINE
+    )
+    __version__ = mo.group(1)
 
 
 setuptools.setup(
@@ -34,7 +41,7 @@ setuptools.setup(
     keywords="authentication",
     author="Peter Hamilton",
     author_email="peter.allen.hamilton@gmail.com",
-    url="",
+    url="https://github.com/OpenKMIP/SLUGS",
     license="Apache License, Version 2.0",
     entry_points={
         'console_scripts': [
