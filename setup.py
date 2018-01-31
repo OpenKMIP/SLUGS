@@ -48,6 +48,9 @@ setuptools.setup(
             'slugs = slugs.app:main'
         ]
     },
+    install_requires=[
+        "cherrypy"
+    ],
     classifiers=[
         "Environment :: Web Environment",
         "Framework :: CherryPy",
