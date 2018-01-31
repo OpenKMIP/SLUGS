@@ -30,6 +30,35 @@ New code should generally follow ``PEP 8`` style guidelines, though there are
 exceptions that will be allowed in special cases. Run the ``flake8`` tests to
 check your code before submitting a pull request (see :ref:`running-tests`).
 
+To prepare your local Python environment for SLUGS development, install the
+project requirements:
+
+.. code:: console
+
+    $ pip install -r requirements.txt
+
+Writing Documentation
+---------------------
+Like new code, new documentation should be written in its own Git branch.
+All SLUGS documentation is written in `RST`_ format and managed using
+``sphinx``. It can be found under ``docs/source``.
+
+If you are interested in contributing to the project documentation, install
+the project documentation requirements:
+
+.. code:: console
+
+    $ pip install -r doc-requirements.txt
+
+To build the documentation, navigate into the ``docs`` directory and run:
+
+.. code:: console
+
+    $ make html
+
+This will build the SLUGS documentation as HTML and place it under the new
+``docs/build/html`` directory. View it using your preferred web browser.
+
 Commit Messages
 ---------------
 Commit messages should include a single line title (75 characters max) followed
@@ -144,6 +173,7 @@ resources:
 * `tox`_
 
 .. _`issue tracker`: https://github.com/OpenKMIP/SLUGS/issues
+.. _`RST`: http://docutils.sourceforge.net/rst.html
 .. _`What to put in your bug report`: http://www.contribution-guide.org/#what-to-put-in-your-bug-report
 .. _`tox`: https://pypi.python.org/pypi/tox
 .. _`flake8`: https://pypi.python.org/pypi/flake8
