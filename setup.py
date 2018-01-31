@@ -43,6 +43,8 @@ setuptools.setup(
     author_email="peter.allen.hamilton@gmail.com",
     url="https://github.com/OpenKMIP/SLUGS",
     license="Apache License, Version 2.0",
+    package_dir={"": "slugs"},
+    packages=setuptools.find_packages(where="slugs"),
     entry_points={
         'console_scripts': [
             'slugs = slugs.app:main'
