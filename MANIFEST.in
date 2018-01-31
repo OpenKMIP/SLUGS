@@ -3,5 +3,6 @@ include LICENSE
 include README.rst
 
 recursive-include docs *
-recursive-include slugs *.py
+recursive-include examples *
+recursive-include slugs *
 prune docs/build
