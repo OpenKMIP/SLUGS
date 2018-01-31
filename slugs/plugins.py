@@ -40,7 +40,7 @@ class FileMonitoringPlugin(plugins.SimplePlugin):
             self._path = value
         else:
             raise ValueError(
-                "Monitored file ({}) must be an existing file.".format(value)
+                "Monitored file '{}' must be an existing file.".format(value)
             )
 
     def start(self):

@@ -90,7 +90,7 @@ class TestFileMonitoringPlugin(testtools.TestCase):
         args = [plugin, 'path', 'invalid']
         self.assertRaisesRegexp(
             ValueError,
-            "Monitored file (invalid) must be an existing file.",
+            "Monitored file 'invalid' must be an existing file.",
             setattr,
             *args
         )
