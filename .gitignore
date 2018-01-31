@@ -1,6 +1,7 @@
 .cache
 .coverage
 .idea
+.pytest_cache
 .tox
 
 *.egg-info
