@@ -15,12 +15,21 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import os
+import re
 import setuptools
+
+# Dynamically set __version__
+version_path = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), 'version.py')
+with open(version_path, 'r') as version_file:
+    mo = re.search(r"^.*= '(\d\.\d\..*)'$", version_file.read(), re.MULTILINE)
+__version__ = mo.group(1)
 
 
 setuptools.setup(
     name="slugs",
-    version="1.0.0",
+    version=__version__,
     description="A Simple, Lightweight User Group Service.",
     keywords="authentication",
     author="Peter Hamilton",

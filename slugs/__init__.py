@@ -12,3 +12,20 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
+
+import os
+import re
+
+# Dynamically set __version__
+version_path = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), 'version.py')
+with open(version_path, 'r') as version_file:
+    mo = re.search(r"^.*= '(\d\.\d\..*)'$", version_file.read(), re.MULTILINE)
+__version__ = mo.group(1)
+
+
+__all__ = [
+    'app',
+    'controllers',
+    'plugins'
+]
