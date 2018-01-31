@@ -19,8 +19,8 @@ web service that serves user/group membership data over a basic REST interface.
 
 For more information on the SLUGS REST API, see :doc:`API <api>`.
 
-SLUGS is built using CherryPy, a well established object-oriented web framework
-for Python. To run SLUGS, simply install the library and then:
+SLUGS is built using `CherryPy`_, a well established object-oriented web
+framework for Python. To run SLUGS, simply install the library and then:
 
 .. code-block:: console
 
@@ -50,5 +50,6 @@ Layout
    configuration
    development
    installation
+
 
 .. _`CherryPy`: http://cherrypy.org
