@@ -55,13 +55,27 @@ these CherryPy settings, see `CherryPy Configuration`_.
     The IP address of the host machine running the application.
 * ``server.socket_port``
     The port number on which to host the application.
+
+    .. note::
+       SLUGS must have permission to bind to the specified port, specifically
+       if the port is a privileged port.
 * ``log.access_file``
     The path to the access log file. This log contains entries for all external
-    accesses to the application (e.g., all GET requests).
+    accesses to the application (e.g., all GET requests). The log directory
+
+    .. note::
+       The log directory must exist before SLUGS is run; the service will not
+       create the log directory for you. SLUGS must also have permission to
+       access the log directory.
 * ``log.error_file``
     The path to the error log file. This log contains entries pertaining to the
     startup, maintenance, and shutdown of the application, including any errors
     that may occur during the lifetime of the application.
+
+    .. note::
+       The log directory must exist before SLUGS is run; the service will not
+       create the log directory for you. SLUGS must also have permission to
+       access the log directory.
 
 Application Settings
 --------------------
@@ -73,6 +87,11 @@ information.
 * ``user_group_mapping``
     The path to the CSV file containing user/group data in ``user,group``
     format. See :ref:`data-management` for more information.
+
+    .. note::
+       The CSV file must exist before SLUGS is run; the service will not
+       create the CSV file for you. SLUGS must also have permission to
+       access the directory containing the CSV file.
 
 The ``[/slugs]`` block is an application-level block that contains additional
 CherryPy settings for the SLUGS application.
