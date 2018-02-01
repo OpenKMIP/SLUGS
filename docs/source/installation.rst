@@ -20,7 +20,8 @@ You can install SLUGS from source via ``git``:
 .. code-block:: console
 
     $ git clone https://github.com/openkmip/slugs.git
-    $ python slugs/setup.py install
+    $ cd slugs
+    $ python setup.py install
 
 If you are on a fresh Linux build, you may also need several additional system
 dependencies, including headers for Python.
