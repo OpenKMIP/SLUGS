@@ -61,7 +61,7 @@ these CherryPy settings, see `CherryPy Configuration`_.
        if the port is a privileged port.
 * ``log.access_file``
     The path to the access log file. This log contains entries for all external
-    accesses to the application (e.g., all GET requests). The log directory
+    accesses to the application (e.g., all GET requests).
 
     .. note::
        The log directory must exist before SLUGS is run; the service will not
