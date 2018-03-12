@@ -50,7 +50,7 @@ setuptools.setup(
         ]
     },
     install_requires=[
-        "cherrypy"
+        "cherrypy>=13.0.0"
     ],
     classifiers=[
         "Environment :: Web Environment",
