@@ -65,6 +65,9 @@ install:
   - pip install six>=1.11.0
   - pip install tox
   - pip install bandit
+  - pip install codecov
   - python setup.py install
 script:
   - tox
+after_success:
+  - codecov
