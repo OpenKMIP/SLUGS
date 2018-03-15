@@ -1,4 +1,4 @@
-# Copyright 2017, The Johns Hopkins University/Applied Physics Laboratory
+# Copyright 2018, The Johns Hopkins University/Applied Physics Laboratory
 # All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
