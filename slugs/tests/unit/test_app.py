@@ -59,7 +59,7 @@ class TestApplication(testtools.TestCase):
         kwargs = {'config': 'invalid'}
         args = argparse.Namespace(**kwargs)
 
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             ValueError,
             "Configuration file path 'invalid' does not exist.",
             app.check_arguments,

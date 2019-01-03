@@ -82,7 +82,7 @@ class TestMainController(testtools.TestCase):
         self.assertEqual(result, groups_mock)
 
         args = [['invalid']]
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             cherrypy.HTTPError,
             "Collection not found.",
             controller._cp_dispatch,
@@ -129,7 +129,7 @@ class TestMainController(testtools.TestCase):
         self.assertEqual(cherrypy.request.params['groups'], True)
 
         args = [['users', 'Adam', 'invalid']]
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             cherrypy.HTTPError,
             "User attribute not found.",
             controller._cp_dispatch,
@@ -142,7 +142,7 @@ class TestMainController(testtools.TestCase):
         self.assertEqual(cherrypy.request.params['users'], True)
 
         args = [['groups', 'Human', 'invalid']]
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             cherrypy.HTTPError,
             "Group attribute not found.",
             controller._cp_dispatch,
@@ -188,7 +188,7 @@ class TestMainController(testtools.TestCase):
         controller._groups = groups_mock
 
         args = [['groups', 'Human', 'users', 'Adam', 'invalid']]
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             cherrypy.HTTPError,
             "Resource not found.",
             controller._cp_dispatch,
@@ -339,7 +339,7 @@ class TestUsersController(testtools.TestCase):
         controller = controllers.UsersController()
 
         kwargs = {'user': 'Adam'}
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             cherrypy.HTTPError,
             "User not found.",
             controller.index,
@@ -400,7 +400,7 @@ class TestUsersController(testtools.TestCase):
             'groups': True,
             'group': 'invalid'
         }
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             cherrypy.HTTPError,
             "Group not found.",
             controller.index,
@@ -530,7 +530,7 @@ class TestGroupsController(testtools.TestCase):
         controller = controllers.GroupsController()
 
         kwargs = {'group': 'Female'}
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             cherrypy.HTTPError,
             "Group not found.",
             controller.index,
@@ -591,7 +591,7 @@ class TestGroupsController(testtools.TestCase):
             'users': True,
             'user': 'invalid'
         }
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             cherrypy.HTTPError,
             "User not found.",
             controller.index,

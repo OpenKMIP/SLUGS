@@ -88,7 +88,7 @@ class TestFileMonitoringPlugin(testtools.TestCase):
         plugin.bus = mock.MagicMock(spec=cherrypy.engine)
 
         args = [plugin, 'path', 'invalid']
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             ValueError,
             "Monitored file 'invalid' must be an existing file.",
             setattr,
