@@ -95,6 +95,8 @@ install:
   # For more info, see: https://github.com/OpenKMIP/SLUGS/issues/3
   - pip uninstall -y six
   - pip install six>=1.11.0
+  # Fill this in...
+  - pip install setuptools_scm
   - pip install tox
   - pip install bandit
   - pip install codecov
