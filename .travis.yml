@@ -95,6 +95,8 @@ install:
   # For more info, see: https://github.com/OpenKMIP/SLUGS/issues/3
   - pip uninstall -y six
   - pip install six>=1.11.0
+  # Pin tempora to >= 1.8 to avoid .tar.gz archive installation errors
+  - pip install tempora>=1.8
   - pip install tox
   - pip install bandit
   - pip install codecov
