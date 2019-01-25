@@ -4,10 +4,13 @@ Changelog
 
 .. _v1.1.0:
 
-1.1.0 - `master`_
-~~~~~~~~~~~~~~~~~
+1.1.0 - September 25, 2019
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. note:: This version is not yet released and is under active development.
+* Add TLS support to the SLUGS API endpoints
+* Add Python 3.7 support
+* Add Ubuntu 16.04 LTS testing support
+* Update dependencies to minimize upstream build errors
 
 .. _v1.0.0:
 
